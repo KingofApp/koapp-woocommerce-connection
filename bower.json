@@ -1,0 +1,14 @@
+{
+  "name": "koapp-service-woocommerceconnection",
+  "authors": "King of App",
+  "description": "WooCommerce Connection service",
+  "keywords": [
+    "kingofapp",
+    "service"
+  ],
+  "license": "MIT",
+  "homepage": "http://kingofapp.com",
+  "private": true,
+  "dependencies": {
+  }
+}
