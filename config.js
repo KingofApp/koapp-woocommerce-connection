@@ -30,7 +30,9 @@
       "services/woocommerceconnection/oauth/hmac-sha1.js",
       "services/woocommerceconnection/oauth/enc-base64-min.js",
       "services/woocommerceconnection/oauth/oauth1.0a.js",
-      "services/woocommerceconnection/service.js"
+      "services/woocommerceconnection/service.js",
+      "services/woocommerceconnection/wcApi.js",
+      "services/woocommerceconnection/wcConfig.js"
     ],
     "libs": [{
       "bower": {
