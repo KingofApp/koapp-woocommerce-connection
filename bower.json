@@ -10,5 +10,6 @@
   "homepage": "http://kingofapp.com",
   "private": true,
   "dependencies": {
+    "oauth-signature": "^1.3.1"
   }
 }
