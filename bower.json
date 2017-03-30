@@ -1,7 +1,7 @@
 {
-  "name": "koapp-service-woocommerceconnection",
+  "name": "koapp-woocommerce-connection",
   "authors": "King of App",
-  "description": "WooCommerce Connection service",
+  "description": "WooCommerce Connection service for koapp",
   "keywords": [
     "kingofapp",
     "service"

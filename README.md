@@ -1,1 +1,1 @@
-koapp-service-woocommerceconnection
+koapp-woocommerce-connection
