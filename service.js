@@ -1,15 +1,16 @@
-angular
-  .module('king.services.woocommerceconnection', [])
-  .run(woocommerceconnectionService);
 
-  woocommerceconnectionService.$inject = ['wcApi','wcLocalStorage'];
-  function woocommerceconnectionService(wcApi, wcLocalStorage) {
-    console.log('[V] Loading WooCommerceConnection service...');
-    var fullApi = {};
-    angular.merge(fullApi, wcApi);
-    angular.merge(fullApi, wcLocalStorage);
-    return {
-      wcApi : fullApi
+  angular
+    .module('woocommerce', [])
+    .service('wcConnectionService', wcConnectionService);
+
+    wcConnectionService.$inject = ['wcApi','wcLocalStorage'];
+    function wcConnectionService(wcApi, wcLocalStorage, config) {
+      // config = {
+      //   url:
+      //   consumerKey:
+      //   consumerSecretKey:
+      // }
+      return (function(config){
+        return angular.merge({}, wcApi(config), wcLocalStorage);
+      }());
     }
-
-  }

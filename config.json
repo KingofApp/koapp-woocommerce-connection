@@ -32,7 +32,8 @@
       "services/woocommerceconnection/oauth/oauth1.0a.js",
       "services/woocommerceconnection/service.js",
       "services/woocommerceconnection/wcApi.js",
-      "services/woocommerceconnection/wcConfig.js"
+      "services/woocommerceconnection/wcConfig.js",
+      "services/woocommerceconnection/wcLocalStorage.js"
     ],
     "libs": [{
       "bower": {
