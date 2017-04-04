@@ -4,13 +4,14 @@
     .service('wcConnectionService', wcConnectionService);
 
     wcConnectionService.$inject = ['wcApi','wcLocalStorage'];
-    function wcConnectionService(wcApi, wcLocalStorage, config) {
+    function wcConnectionService(wcApi, wcLocalStorage) {
       // config = {
       //   url:
       //   consumerKey:
       //   consumerSecretKey:
       // }
-      return (function(config){
-        return angular.merge({}, wcApi(config), wcLocalStorage);
-      }());
+      return function(config) {        
+        return angular.merge({}, wcLocalStorage, wcApi(config) );
+      };
+
     }

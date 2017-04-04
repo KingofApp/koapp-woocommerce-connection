@@ -1,29 +1,33 @@
 angular
-  .module('woocommerce', [])
+  .module('woocommerce.api', [])
   .service('wcApi', wcApi);
 
-  wcApi.$inject = ['$q', '$http'];
+  wcApi.$inject = ['$q', '$http', 'wcConfig'];
 
-  function wcApi($q, $http) {
-    return (function(config){
-        var oauth_data        = (config) ? config.getOauthData : '';
-        var oauth             = (config) ? config.createOauth : '';
-        var url               = (config) ? config.getUrl : '';
+  function wcApi($q, $http, wcConfig) {
+    return function(endpoint){
+
+        var config   = wcConfig(endpoint);
+
+        var oauth_data        = config.getOauthData(endpoint);
+        var oauth             = config.createOauth(endpoint);
+        var url               = config.getUrl(endpoint);
         var isAmpersand       = false;
         var route             = "";
         var request           = {  url    : url + 'wc-api/v3/',
           method  : 'GET'
         };
 
-      return {
-        getProducts         : getProducts,
-        getProductById      : getProductById,
-        getProductReviews   : getProductReviews,
-        getProductByCategory: getProductByCategory,
-        getProductByTag     : getProductByTag,
-        getProductAttributes: getProductAttributes,
-        getOrder            : getOrder
-      };
+        return {
+          getProducts         : getProducts,
+          getProductById      : getProductById,
+          getProductReviews   : getProductReviews,
+          getProductByCategory: getProductByCategory,
+          getProductByTag     : getProductByTag,
+          getProductAttributes: getProductAttributes,
+          getOrder            : getOrder
+        }
+
 
       function getProducts() {
         route       = "products";
@@ -110,6 +114,6 @@ angular
       }
 
 
-    }());
+    };
 
   }

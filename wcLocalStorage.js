@@ -1,5 +1,5 @@
 angular
-  .module('woocommerce')
+  .module('woocommerce.localstorage', [])
   .factory('wcLocalStorage', wcLocalStorage);
 
   wcLocalStorage.$inject = ['$q', '$http'];

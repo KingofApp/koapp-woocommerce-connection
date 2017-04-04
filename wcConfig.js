@@ -1,5 +1,5 @@
 angular
-  .module('woocommerce', [])
+  .module('woocommerce.config', [])
   .service('wcConfig', wcConfig);
 
   // endpointConfig {
@@ -9,12 +9,16 @@ angular
   // }
 
   function wcConfig() {
-    return (function(endpointConfig){
+    return (function(){
 
-      return {
-        createOauth     : createOauth,
-        getOauthData    : getOauthData,
-        getUrl          : getUrl
+      var endpointConfig = endpointConfig;
+
+      return function(){
+        return {
+          createOauth     : createOauth,
+          getOauthData    : getOauthData,
+          getUrl          : getUrl
+        }
       };
 
       oauth.getTimeStamp = function() {
@@ -29,12 +33,12 @@ angular
         return text;
       };
 
-      function getUrl() {
+      function getUrl(endpointConfig) {
         return endpointConfig.url;
       }
 
-      function getOauthData() {
-        var oauth       = createOauth();
+      function getOauthData(endpointConfig) {
+        var oauth       = createOauth(endpointConfig);
         var oauth_data  = { oauth_consumer_key    : oauth.consumer.key,
                             oauth_nonce           : oauth.getNonce(5),
                             oauth_signature_method: oauth.signature_method,
@@ -43,7 +47,7 @@ angular
         return oauth_data;
       }
 
-      function createOauth() {
+      function createOauth(endpointConfig) {
         return OAuth({
           consumer: {
               key   : endpointConfig.consumerKey,
