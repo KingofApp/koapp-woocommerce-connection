@@ -10,7 +10,7 @@
       //   consumerKey:
       //   consumerSecretKey:
       // }
-      return function(config) {        
+      return function(config) {
         return angular.merge({}, wcLocalStorage, wcApi(config) );
       };
 
