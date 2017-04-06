@@ -15,8 +15,8 @@ angular
         var isAmpersand       = false;
         var route             = "";
         var request           = {  url    : url + 'wc-api/v3/',
-          method  : 'GET'
-        };
+                                  method  : 'GET'
+                                };
 
         return {
           getProducts         : getProducts,
@@ -25,7 +25,8 @@ angular
           getProductByCategory: getProductByCategory,
           getProductByTag     : getProductByTag,
           getProductAttributes: getProductAttributes,
-          getOrder            : getOrder
+          getOrder            : getOrder,
+          createOrder         : createOrder
         }
 
 
@@ -70,17 +71,59 @@ angular
         return results;
       }
 
-      function createOrder(orderItem) {
-        route          = "orders";
-        request.method = "POST";
-        var results    = postOrder(route, orderItem);
-        return results;
-      }
 
       function getOrder(orderId) {
         route       = "orders/" + orderId;
         var results = getResults(route);
         return results;
+      }
+
+      function createOrder(orderItem) {
+        route          = "orders";
+        var results    = postOrder(route, orderItem);
+        return results;
+      }
+
+
+      function postOrder(route, orderItem) {
+        var request_data           = {
+          url   : request.url + route,
+          method: 'POST',
+          data  : orderItem
+        };
+
+
+       var oData = oauth.authorize(request_data, oauth.consumer);
+
+
+       var paramsArray = [
+         'oauth_consumer_key',
+         'oauth_signature_method',
+         'oauth_timestamp',
+         'oauth_nonce',
+         'oauth_version',
+         'oauth_signature'
+       ];
+
+       var params = {};
+       paramsArray.forEach(function(param){
+         params[param] = oData[param];
+       });
+
+        $http({
+            url         : request_data.url,
+            params      : oData,
+            method      : 'POST',
+            data        : request_data.data,
+            headers     : { "contentType" : "application/json" }
+        })
+        .then(function(data) {
+          console.log(data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+
       }
 
       function getResults(route, isAmpersand) {
@@ -105,7 +148,7 @@ angular
       }
 
 
-      function getEncodedUrl(route, order) {
+      function getEncodedUrl(route) {
         var paramsStr                = oauth.getParameterString(request, oauth_data);
         var requestUrl               = request.url + route;
         requestUrl                   = (isAmpersand) ? requestUrl + '&' : requestUrl + '?';
