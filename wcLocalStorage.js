@@ -13,7 +13,7 @@ angular
     };
 
     function getCart() {
-      return angular.fromJson(sessionStorage.storedCart);
+      return  (!sessionStorage.storedCart) ?  {} : angular.fromJson(sessionStorage.storedCart); 
     }
 
     function deleteCartItem(idToDelete) {
