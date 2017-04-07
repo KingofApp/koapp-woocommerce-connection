@@ -6,25 +6,15 @@ angular
 
   function wcLocalStorage() {
     return {
-      addCartItem    : addCartItem,
-      deleteCartItem : deleteCartItem,
       getCart        : getCart,
+      addCartItem    : addCartItem,
+      editCart       : editCart,
+      deleteCartItem : deleteCartItem,
       resetCart      : resetCart
     };
 
     function getCart() {
-      return  (!sessionStorage.storedCart) ?  {} : angular.fromJson(sessionStorage.storedCart); 
-    }
-
-    function deleteCartItem(idToDelete) {
-      var storedObject = angular.fromJson(sessionStorage.storedCart);
-      var objectToSave = [];
-      if (storedObject && angular.isArray(storedObject)) {
-        for (var i = 0; i < storedObject.length; i++) {
-          if (idToDelete === storedObject[i].id) storedObject.splice(i, 1);
-        }
-      }
-      sessionStorage.storedCart = angular.toJson(storedObject);
+      return  (!sessionStorage.storedCart) ?  {} : angular.fromJson(sessionStorage.storedCart);
     }
 
     function addCartItem(itemToAdd) {
@@ -45,6 +35,31 @@ angular
 
       sessionStorage.storedCart = angular.toJson(objectToSave);
     }
+
+    function editCart(itemId, quantity) {
+      var storedObject = angular.fromJson(sessionStorage.storedCart);
+      var objectToSave = [];
+      if (storedObject && angular.isArray(storedObject)) {
+        storedObject.forEach(function(item) {
+          console.log(item.id, itemId, item.id === itemId);
+          if (item.id === itemId) item.quantity = quantity;
+          objectToSave.push(item);
+        });
+      }
+      sessionStorage.storedCart = angular.toJson(objectToSave);
+    }
+
+    function deleteCartItem(idToDelete) {
+      var storedObject = angular.fromJson(sessionStorage.storedCart);
+      var objectToSave = [];
+      if (storedObject && angular.isArray(storedObject)) {
+        for (var i = 0; i < storedObject.length; i++) {
+          if (idToDelete === storedObject[i].id) storedObject.splice(i, 1);
+        }
+      }
+      sessionStorage.storedCart = angular.toJson(storedObject);
+    }
+
 
     function resetCart() {
       sessionStorage.removeItem('storedCart');
