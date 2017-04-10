@@ -2,21 +2,16 @@ angular
   .module('woocommerce.api', [])
   .service('wcApi', wcApi);
 
-  wcApi.$inject = ['$q', '$http', 'wcConfig'];
+  wcApi.$inject = ['$q', '$http'];
 
-  function wcApi($q, $http, wcConfig) {
+  function wcApi($q, $http) {
     return function(endpoint){
 
-        var config   = wcConfig(endpoint);
-
-        var oauth_data        = config.getOauthData(endpoint);
-        var oauth             = config.createOauth(endpoint);
-        var url               = config.getUrl(endpoint);
-        var isAmpersand       = false;
-        var route             = "";
-        var request           = {  url    : url + 'wc-api/v3/',
-                                  method  : 'GET'
-                                };
+        var WC = new WooCommerceAPI.WooCommerceAPI({
+                url: endpoint.url,
+                consumerKey: endpoint.consumerKey,
+                consumerSecret: endpoint.consumerSecretKey
+        });
 
         return {
           getProducts         : getProducts,
@@ -29,133 +24,65 @@ angular
           createOrder         : createOrder
         }
 
-
       function getProducts() {
-        route       = "products";
-        var results = getResults(route);
-        return results;
+        route = "products";
+        return getResults(route);
       }
 
       function getProductById(productId) {
-        route       = "products/" + productId;
-        var results = getResults(route);
-        return results;
+        route = "products/" + productId;
+        return getResults(route);
       }
 
       function getProductReviews(productId) {
-        route       = "products/"+ productId +"/reviews";
-        var results = getResults(route);
-        return results;
+        route = "products/"+ productId +"/reviews";
+        return getResults(route);
       }
 
       // slug category
       function getProductByCategory(category) {
-        route       = "products?";
-        isAmpersand = true;
-        oauth_data['filter[category]'] = category;
-        var results = getResults(route);
-        return results;
+        route = "products?";
+        return getResults(route + '?filter[category]=' + category);
       }
 
       function getProductByTag(tag) {
-        route       = "products?";
-        isAmpersand = true;
-        oauth_data['filter[tag]'] = tag;
-        var results = getResults(route);
-        return results;
+        route = "products?";
+        return getResults(route + '?filter[tag]=' + tag);
       }
 
       function getProductAttributes(productId) {
-        route       = "products/attributes/"+ productId;
-        var results = getResults(route);
-        return results;
+        route = "products/attributes/"+ productId;
+        return getResults(route);
       }
 
 
       function getOrder(orderId) {
-        route       = "orders/" + orderId;
-        var results = getResults(route);
-        return results;
+        route = "orders/" + orderId;
+        return getResults(route);
       }
 
       function createOrder(orderItem) {
-        route          = "orders";
-        var results    = postOrder(route, orderItem);
-        return results;
+        route = "orders";
+        return postOrder(route, orderItem);
       }
-
 
       function postOrder(route, orderItem) {
-        var request_data           = {
-          url   : request.url + route,
-          method: 'POST',
-          data  : orderItem
-        };
-
-
-       var oData = oauth.authorize(request_data, oauth.consumer);
-
-
-       var paramsArray = [
-         'oauth_consumer_key',
-         'oauth_signature_method',
-         'oauth_timestamp',
-         'oauth_nonce',
-         'oauth_version',
-         'oauth_signature'
-       ];
-
-       var params = {};
-       paramsArray.forEach(function(param){
-         params[param] = oData[param];
-       });
-
-        $http({
-            url         : request_data.url,
-            params      : oData,
-            method      : 'POST',
-            data        : request_data.data,
-            headers     : { "contentType" : "application/json" }
+        var deferred = $q.defer();
+        WC.post(route, orderItem,function(err, data, res) {
+          if(err) deferred.reject(err);
+          deferred.resolve(JSON.parse(res));
         })
-        .then(function(data) {
-          console.log(data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        })
-
-      }
-
-      function getResults(route, isAmpersand) {
-        var deferred               = $q.defer();
-        var url                    = request.url + route;
-        oauth_data.oauth_signature = oauthSignature.generate(request.method, url, oauth_data, oauth.consumer.secret, '', { encodeSignature: true});
-        var encodedUrl             = getEncodedUrl(route);
-        $http({
-          method    : request.method,
-          url       : encodedUrl,
-          headers   : {
-            "Content-Type": "application/json; charset=UTF-8"
-          }
-        })
-        .then(function(objS){
-          deferred.resolve(objS);
-        })
-        .catch(function(objE){
-          deferred.reject(objE);
-        });
         return deferred.promise;
       }
 
-
-      function getEncodedUrl(route) {
-        var paramsStr                = oauth.getParameterString(request, oauth_data);
-        var requestUrl               = request.url + route;
-        requestUrl                   = (isAmpersand) ? requestUrl + '&' : requestUrl + '?';
-        var encodedUrl               = requestUrl + paramsStr;
-        return encodedUrl;
+      function getResults(route) {
+        var deferred = $q.defer();
+        WC.get(route,function(err, data, res) {
+          if(err) deferred.reject(err);
+          deferred.resolve(JSON.parse(res));
+        })
+        return deferred.promise;
       }
-
 
     };
 

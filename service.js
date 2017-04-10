@@ -13,5 +13,4 @@
       return function(config) {
         return angular.merge({}, wcLocalStorage, wcApi(config) );
       };
-
-    }
+  }

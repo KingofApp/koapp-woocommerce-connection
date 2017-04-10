@@ -31,10 +31,11 @@ angular
         });
       }
 
-      if (!exist) objectToSave.push(itemToAdd);
+      function resetCart() {
+        sessionStorage.removeItem('storedCart');
+      }
+    
 
-      sessionStorage.storedCart = angular.toJson(objectToSave);
-    }
 
     function editCart(itemId, quantity) {
       var storedObject = angular.fromJson(sessionStorage.storedCart);

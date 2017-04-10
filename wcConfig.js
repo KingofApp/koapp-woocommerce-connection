@@ -42,7 +42,8 @@ angular
         var oauth_data  = { oauth_consumer_key    : oauth.consumer.key,
                             oauth_nonce           : oauth.getNonce(5),
                             oauth_signature_method: oauth.signature_method,
-                            oauth_timestamp       : oauth.getTimeStamp()
+                            oauth_timestamp       : oauth.getTimeStamp(),
+                            oauth_version         : '1.0'
                           };
         return oauth_data;
       }
