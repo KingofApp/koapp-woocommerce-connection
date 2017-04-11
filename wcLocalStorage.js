@@ -31,18 +31,16 @@ angular
         });
       }
 
-      function resetCart() {
-        sessionStorage.removeItem('storedCart');
-      }
-    
+      if (!exist) objectToSave.push(itemToAdd);
 
+      sessionStorage.storedCart = angular.toJson(objectToSave);
+    }
 
     function editCart(itemId, quantity) {
       var storedObject = angular.fromJson(sessionStorage.storedCart);
       var objectToSave = [];
       if (storedObject && angular.isArray(storedObject)) {
         storedObject.forEach(function(item) {
-          console.log(item.id, itemId, item.id === itemId);
           if (item.id === itemId) item.quantity = quantity;
           objectToSave.push(item);
         });
