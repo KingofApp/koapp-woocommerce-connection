@@ -5,13 +5,13 @@ angular
   wcApi.$inject = ['$q', '$http'];
 
   function wcApi($q, $http) {
-    return function(endpoint){
-
-        var WC = new WooCommerceAPI.WooCommerceAPI({
+    return function(endpoint){        
+        var WC = {};
+        var WC = (endpoint.url) ? new WooCommerceAPI.WooCommerceAPI({
                 url: endpoint.url,
                 consumerKey: endpoint.consumerKey,
                 consumerSecret: endpoint.consumerSecretKey
-        });
+        }) : {};
 
         return {
           getProducts         : getProducts,
