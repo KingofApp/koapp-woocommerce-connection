@@ -5,7 +5,7 @@ angular
   wcApi.$inject = ['$q', '$http'];
 
   function wcApi($q, $http) {
-    return function(endpoint){        
+    return function(endpoint){
         var WC = {};
         var WC = (endpoint.url) ? new WooCommerceAPI.WooCommerceAPI({
                 url: endpoint.url,
@@ -15,6 +15,7 @@ angular
 
         return {
           getProducts         : getProducts,
+          getMoreProducts     : getMoreProducts,
           getProductById      : getProductById,
           getProductReviews   : getProductReviews,
           getProductByCategory: getProductByCategory,
@@ -26,6 +27,11 @@ angular
 
       function getProducts() {
         route = "products";
+        return getResults(route);
+      }
+      function getMoreProducts(offset) {
+        route = "products?filter[offset]="+offset;
+        console.log(route);
         return getResults(route);
       }
 
