@@ -14,7 +14,7 @@ angular
     };
 
     function getCart() {
-      return  (!sessionStorage.storedCart) ?  {} : angular.fromJson(sessionStorage.storedCart);
+      return  (!sessionStorage.storedCart) ?  [] : angular.fromJson(sessionStorage.storedCart);
     }
 
     function addCartItem(itemToAdd) {
