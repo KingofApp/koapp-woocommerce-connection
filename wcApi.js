@@ -26,50 +26,40 @@ angular
         }
 
       function getProducts() {
-        route = "products";
-        return getResults(route);
+        return getResults("products");
       }
       function getMoreProducts(offset) {
-        route = "products?filter[offset]="+offset;
-        console.log(route);
-        return getResults(route);
+        return getResults("products?filter[offset]="+offset);
       }
 
       function getProductById(productId) {
-        route = "products/" + productId;
-        return getResults(route);
+        return getResults("products/" + productId);
       }
 
       function getProductReviews(productId) {
-        route = "products/"+ productId +"/reviews";
-        return getResults(route);
+        return getResults("products/"+ productId +"/reviews");
       }
 
       // slug category
       function getProductByCategory(category) {
-        route = "products?";
-        return getResults(route + '?filter[category]=' + category);
+        return getResults("products?filter[category]=" + category);
       }
 
       function getProductByTag(tag) {
-        route = "products?";
-        return getResults(route + '?filter[tag]=' + tag);
+        return getResults('products?filter[tag]=' + tag);
       }
 
       function getProductAttributes(productId) {
-        route = "products/attributes/"+ productId;
-        return getResults(route);
+        return getResults("products/attributes/"+ productId);
       }
 
 
       function getOrder(orderId) {
-        route = "orders/" + orderId;
-        return getResults(route);
+        return getResults("orders/" + orderId);
       }
 
-      function createOrder(orderItem) {
-        route = "orders";
-        return postOrder(route, orderItem);
+      function createOrder(orderItem) {        
+        return postOrder("orders", orderItem);
       }
 
       function postOrder(route, orderItem) {
