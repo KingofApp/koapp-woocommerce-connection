@@ -14,15 +14,18 @@ angular
         }) : {};
 
         return {
-          getProducts         : getProducts,
-          getMoreProducts     : getMoreProducts,
-          getProductById      : getProductById,
-          getProductReviews   : getProductReviews,
-          getProductByCategory: getProductByCategory,
-          getProductByTag     : getProductByTag,
-          getProductAttributes: getProductAttributes,
-          getOrder            : getOrder,
-          createOrder         : createOrder
+          getProducts               : getProducts,
+          getMoreProducts           : getMoreProducts,
+          getProductById            : getProductById,
+          getProductReviews         : getProductReviews,
+          getProductByCategory      : getProductByCategory,
+          getMoreProductsByCategory : getMoreProductsByCategory,
+          getProductByTag           : getProductByTag,
+          getProductAttributes      : getProductAttributes,
+          getCategories             : getCategories,
+          getProductBySearch        : getProductBySearch,
+          getOrder                  : getOrder,
+          createOrder               : createOrder
         }
 
       function getProducts() {
@@ -45,6 +48,10 @@ angular
         return getResults("products?filter[category]=" + category);
       }
 
+      function getMoreProductsByCategory(category, offset) {
+        return getResults("products?filter[category]=" + category + "&filter[offset]=" + offset);
+      }
+
       function getProductByTag(tag) {
         return getResults('products?filter[tag]=' + tag);
       }
@@ -53,12 +60,19 @@ angular
         return getResults("products/attributes/"+ productId);
       }
 
+      function getCategories() {
+        return getResults("products/categories?filter[offset]=10");
+      }
+
+      function getProductBySearch(q) {
+        return getResults('products?filter[q]=' + q);
+      }
 
       function getOrder(orderId) {
         return getResults("orders/" + orderId);
       }
 
-      function createOrder(orderItem) {        
+      function createOrder(orderItem) {
         return postOrder("orders", orderItem);
       }
 

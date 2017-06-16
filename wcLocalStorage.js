@@ -25,7 +25,7 @@ angular
         storedObject.forEach(function(item) {
           if (item.id === itemToAdd.id) {
             exist = true;
-            item.quantity = (itemToAdd.quantity+item.quantity);
+            item.quantity = (parseInt(itemToAdd.quantity)+parseInt(item.quantity));
           }
           objectToSave.push(item);
         });
