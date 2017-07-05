@@ -4,7 +4,7 @@ This library is used for communicating a Woocommerce Shop from Wordpress with th
 
 ## Retrieve data from the Store
 
-```
+```javascript
 getProducts()                     // Returns the 10 last products from the store
 getMoreProducts(offset)           // Returns 10 products starting from a given index
 getProductById(id)                // Returns a product with the given id
@@ -17,7 +17,7 @@ createOrder(orderItem)            // Creates an order with the given orderItems
 ```
 ## Cart management
 
-```
+```javascript
 getCart()              // Returns cart from localStorage
 addCartItem(item)      // Stores an item in the localStorage cart
 editCart(id, quantity) // Edits quantity from the product with the given id an updates the localStorage cart
