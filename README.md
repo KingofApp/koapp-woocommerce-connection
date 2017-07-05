@@ -10,8 +10,11 @@ getMoreProducts(offset)           // Returns 10 products starting from a given i
 getProductById(id)                // Returns a product with the given id
 getProductReviews(id)             // Returns reviews from the product with the given id
 getProductByCategory(category)    // Returns products with the given category
+getMoreProductsByCategory(offset) // Returns 10 products starting from a given index
 getProductByTag(tag)              // Returns products with the given tag
-getProductAttributes(attributes)  // Returns prodcuts with the given attributes
+getProductAttributes(attributes)  // Returns products with the given attributes
+getCategories()                   // Returns product's categories
+getProductBySearch(query)         // Returns product's by query
 getOrder(id)                      // Returns an order with the given id
 createOrder(orderItem)            // Creates an order with the given orderItems
 ```
