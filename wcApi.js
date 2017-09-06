@@ -6,7 +6,6 @@ angular
 
   function wcApi($q, $http) {
     return function(endpoint){
-        var WC = {};
         var WC = (endpoint.url) ? new WooCommerceAPI.WooCommerceAPI({
                 url: endpoint.url,
                 consumerKey: endpoint.consumerKey,
@@ -78,7 +77,8 @@ angular
 
       function postOrder(route, orderItem) {
         var deferred = $q.defer();
-        WC.post(route, orderItem,function(err, data, res) {
+        var order = {"order" : orderItem };
+        WC.post(route, order, function(err, data, res) {
           if(err) deferred.reject(err);
           deferred.resolve(JSON.parse(res));
         })
