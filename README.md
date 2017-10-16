@@ -18,7 +18,8 @@ getProductBySearch(query)         // Returns product's by query
 getOrder(id)                      // Returns an order with the given id
 createOrder(orderItem)            // Creates an order with the given orderItems
 ```
-## Cart management
+
+## Cart management
 
 ```javascript
 getCart()              // Returns cart from localStorage
