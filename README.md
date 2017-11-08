@@ -1,4 +1,4 @@
-# Koapp Woocommerce Connection v1.1.1
+# Koapp Woocommerce Connection v1.1.2
 
 This library is used for communicating a Woocommerce Shop from Wordpress with the koapp Woocommerce modules.
 
