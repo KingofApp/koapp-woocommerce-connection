@@ -1,31 +1,55 @@
-angular
-  .module('woocommerce.api', [])
-  .service('wcApi', wcApi);
+(function() {
+  angular
+    .module('woocommerce.api', [])
+    .service('wcApi', wcApi);
 
   wcApi.$inject = ['$q', '$http'];
 
   function wcApi($q, $http) {
-    return function(endpoint){
-        var WC = (endpoint.url) ? new WooCommerceAPI.WooCommerceAPI({
-                url: endpoint.url,
-                consumerKey: endpoint.consumerKey,
-                consumerSecret: endpoint.consumerSecretKey
-        }) : {};
+    return function(endpoint) {
+      var WC = (endpoint.url) ? new WooCommerceAPI.WooCommerceAPI({
+              url: endpoint.url,
+              consumerKey: endpoint.consumerKey,
+              consumerSecret: endpoint.consumerSecretKey
+      }) : {};
 
-        return {
-          getProducts               : getProducts,
-          getMoreProducts           : getMoreProducts,
-          getProductById            : getProductById,
-          getProductReviews         : getProductReviews,
-          getProductByCategory      : getProductByCategory,
-          getMoreProductsByCategory : getMoreProductsByCategory,
-          getProductByTag           : getProductByTag,
-          getProductAttributes      : getProductAttributes,
-          getCategories             : getCategories,
-          getProductBySearch        : getProductBySearch,
-          getOrder                  : getOrder,
-          createOrder               : createOrder
-        }
+      return {
+        getProducts               : getProducts,
+        getMoreProducts           : getMoreProducts,
+        getProductById            : getProductById,
+        getProductReviews         : getProductReviews,
+        getProductByCategory      : getProductByCategory,
+        getMoreProductsByCategory : getMoreProductsByCategory,
+        getProductByTag           : getProductByTag,
+        getProductAttributes      : getProductAttributes,
+        getCategories             : getCategories,
+        getProductBySearch        : getProductBySearch,
+        getOrder                  : getOrder,
+        createOrder               : createOrder,
+        getFavoriteProducts       : getFavoriteProducts
+      }
+
+      function getFavoriteProducts(collection) {
+        const deferred   = $q.defer();
+        // this long name of index in function favorite, it prevent be set by a stranger a value by error
+        // const index      = 'KOAPP_STORAGE_WOOCOMMERCE_FAVORITE_INDEX';
+        // const storage    = localStorage[index];
+        // const storage    = localStorage[index];
+        // const isJSON     = /^\[/.test(storage) && /\]$/.test(storage);
+        // const collection = JSON.parse(isJSON ? storage : "[]");
+
+        const response = collection
+          .map(id => {
+            return getProductById(id)
+              .then(value => value.product)
+              .catch(deferred.reject);
+          });
+
+        // return promise with the same structure of getProducts, for improve the api
+        return $q.all(response).then(values => ({
+          products: values
+        }));
+      }
 
       function getProducts() {
         return getResults("products");
@@ -79,6 +103,7 @@ angular
         var deferred = $q.defer();
         var order = {"order" : orderItem };
         WC.post(route, order, function(err, data, res) {
+          // if(err) deferred.reject(err);
           if(err) deferred.reject(err);
           deferred.resolve(JSON.parse(res));
         })
@@ -95,5 +120,5 @@ angular
       }
 
     };
-
   }
+}());
